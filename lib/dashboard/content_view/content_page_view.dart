@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inshorts/controller/dashboard_controller.dart';
 import 'package:inshorts/dashboard/content_view/content_page.dart';
+import 'package:stacked_page_view/stacked_page_view.dart';
 
 class ContentPageView extends GetView<DashboardController> {
   const ContentPageView({Key? key}) : super(key: key);
@@ -17,7 +18,11 @@ class ContentPageView extends GetView<DashboardController> {
           controller: controller.feedPageController.value,
           children: [
             for (int i = 0; i < controller.listContent.length; i++)
-              const ContentPage(),
+              StackPageView(
+                controller: controller.feedPageController.value,
+                index: i,
+                child: const ContentPage(),
+              )
           ],
           onPageChanged: (index) {
             controller.onContentPageChange(index);

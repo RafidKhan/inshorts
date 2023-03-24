@@ -9,6 +9,8 @@ class DashboardController extends GetxController {
   final Rx<PageController> feedPageController =
       Rx<PageController>(PageController());
 
+
+
   Rx<int> currentPageIndex = Rx<int>(1);
   Rx<int> currentFeedPageIndex = Rx<int>(0);
 
