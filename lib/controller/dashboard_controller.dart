@@ -1,33 +1,33 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class DashboardController extends GetxController {
-  final PageController pageController = PageController();
-  final PageController feedPageController = PageController();
+  final Rx<PageController> pageController =
+      Rx<PageController>(PageController(initialPage: 1));
+  final Rx<PageController> feedPageController =
+      Rx<PageController>(PageController());
 
-  int currentPageIndex = 0;
-  int currentFeedPageIndex = 0;
+  Rx<int> currentPageIndex = Rx<int>(1);
+  Rx<int> currentFeedPageIndex = Rx<int>(0);
 
-  String selectedTab = "";
+  Rx<String> selectedTab = Rx<String>("");
 
-  Map<String, dynamic> selectedContent = {};
+  Rx<Map<String, dynamic>> selectedContent = Rx<Map<String, dynamic>>({});
 
-  bool showContentBottomNavBar = true;
-  bool showAppBar = true;
+  RxBool showContentBottomNavAndAppbar = true.obs;
 
   selectTab(String text) {
-    selectedTab = text;
+    selectedTab.value = text;
   }
 
-  toggleContentBottomNav() {
-    showContentBottomNavBar = !showContentBottomNavBar;
-
-    update();
+  toggleContentBottomNavAndAppBar() {
+    showContentBottomNavAndAppbar.value = !showContentBottomNavAndAppbar.value;
   }
 
-  setAppBarVisibility(bool value){
-    showAppBar = value;
-    update();
+  setBottomNavAndAppbarVisibility(bool visibility) {
+    showContentBottomNavAndAppbar.value = visibility;
   }
 
   List<String> listData = [
@@ -101,45 +101,73 @@ class DashboardController extends GetxController {
   ];
 
   selectPage(int index) {
-    pageController.animateToPage(
+    pageController.value.animateToPage(
       index,
       duration: const Duration(seconds: 1),
       curve: Curves.ease,
     );
 
-    currentPageIndex = index;
-    if (currentPageIndex == 0) {
-      showContentBottomNavBar = true;
+    currentPageIndex.value = index;
+    if (currentPageIndex.value == 0) {
+      showContentBottomNavAndAppbar.value = true;
     }
-    update();
   }
 
   feedPageScrollToTop() {
-    feedPageController.animateToPage(
+    feedPageController.value.animateToPage(
       0,
       duration: const Duration(seconds: 1),
       curve: Curves.fastOutSlowIn,
     );
-
-    update();
   }
 
   selectContent(Map<String, dynamic> mapData) {
-    selectedContent = mapData;
-    update();
+    selectedContent.value = mapData;
   }
 
   selectTopic(int index) {
     selectTab("${listTopic[index]} $index");
     selectContent(listContent[0]);
     selectPage(1);
-    currentFeedPageIndex = 0;
+    currentFeedPageIndex.value = 0;
   }
 
   void selectOption(int index) {
     selectTab(listData[index]);
     selectPage(1);
     selectContent(listContent[0]);
-    currentFeedPageIndex = 0;
+    currentFeedPageIndex.value = 0;
+  }
+
+  onContentPageChange(int index) async {
+    currentFeedPageIndex.value = index;
+    selectContent(listContent[index]);
+    if (index == 0) {
+      setBottomNavAndAppbarVisibility(true);
+    } else {
+      setBottomNavAndAppbarVisibility(false);
+    }
+  }
+
+  onMainPageChange(int index) async {
+    currentPageIndex.value = index;
+    if (index == 2) {
+      setBottomNavAndAppbarVisibility(false);
+      timer?.cancel();
+    } else if (index == 0) {
+      setBottomNavAndAppbarVisibility(true);
+      timer?.cancel();
+    } else if (index == 1) {
+      setBottomNavAndAppbarVisibility(true);
+      forceHideBottomNavAndAppbar();
+    }
+  }
+
+  Timer? timer;
+
+  forceHideBottomNavAndAppbar() {
+    timer = Timer(const Duration(seconds: 3), () {
+      setBottomNavAndAppbarVisibility(false);
+    });
   }
 }

@@ -3,76 +3,77 @@ import 'package:get/get.dart';
 import 'package:inshorts/controller/dashboard_controller.dart';
 import 'package:inshorts/dashboard/content_view/content_page.dart';
 
-class ContentPageView extends StatelessWidget {
+class ContentPageView extends GetView<DashboardController> {
   const ContentPageView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DashboardController>(builder: (controller) {
-      return Scaffold(
-        body: InkWell(
-          onTap: controller.toggleContentBottomNav,
-          child: PageView(
-            scrollDirection: Axis.vertical,
-            controller: controller.feedPageController,
-            children: [
-              for (int i = 0; i < controller.listContent.length; i++)
-                const ContentPage(),
-            ],
-            onPageChanged: (index) {
-              controller.currentFeedPageIndex = index;
-              controller.selectContent(controller.listContent[index]);
-              controller.update();
-            },
-          ),
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      body: InkWell(
+        onTap: controller.toggleContentBottomNavAndAppBar,
+        child: PageView(
+          scrollDirection: Axis.vertical,
+          controller: controller.feedPageController.value,
+          children: [
+            for (int i = 0; i < controller.listContent.length; i++)
+              const ContentPage(),
+          ],
+          onPageChanged: (index) {
+            controller.onContentPageChange(index);
+          },
         ),
-        bottomNavigationBar: Visibility(
-            visible: controller.showContentBottomNavBar,
-            maintainAnimation: true,
-            maintainState: true,
-            child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.fastOutSlowIn,
-                opacity: controller.showContentBottomNavBar ? 1 : 0,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 70,
-                        vertical: 20,
+      ),
+      bottomNavigationBar: Obx(() {
+        return Visibility(
+          visible: controller.showContentBottomNavAndAppbar.value,
+          maintainAnimation: true,
+          maintainState: true,
+          child: AnimatedOpacity(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.fastOutSlowIn,
+            opacity: controller.showContentBottomNavAndAppbar.value ? 1 : 0,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 70,
+                    vertical: 20,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          print("SHARE: ${controller.selectedContent}");
+                        },
+                        child: Column(
+                          children: const [
+                            Icon(Icons.share),
+                            Text("Share"),
+                          ],
+                        ),
                       ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              print("SHARE: ${controller.selectedContent}");
-                            },
-                            child: Column(
-                              children: const [
-                                Icon(Icons.share),
-                                Text("Share"),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              print("BOOKMARK: ${controller.selectedContent}");
-                            },
-                            child: Column(
-                              children: const [
-                                Icon(Icons.bookmark),
-                                Text("Bookmark"),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ))),
-      );
-    });
+                      InkWell(
+                        onTap: () {
+                          print("BOOKMARK: ${controller.selectedContent}");
+                        },
+                        child: Column(
+                          children: const [
+                            Icon(Icons.bookmark),
+                            Text("Bookmark"),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }),
+    );
   }
 }

@@ -13,7 +13,10 @@ class AppbarPage0Widget extends StatelessWidget {
         elevation: 1,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          width: MediaQuery.of(context).size.width,
+          width: MediaQuery
+              .of(context)
+              .size
+              .width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -21,7 +24,10 @@ class AppbarPage0Widget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width / 3.5,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width / 3.5,
                     child: const Align(
                       alignment: Alignment.centerLeft,
                       child: Icon(
@@ -31,7 +37,10 @@ class AppbarPage0Widget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width / 3.5,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width / 3.5,
                     child: InkWell(
                       onTap: () {
                         controller.selectPage(0);
@@ -42,7 +51,10 @@ class AppbarPage0Widget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width / 3.5,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width / 3.5,
                     child: InkWell(
                       onTap: () {
                         controller.selectPage(1);
@@ -52,9 +64,11 @@ class AppbarPage0Widget extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children:  [
-                            Text(controller.selectedTab),
-                             const Icon(
+                          children: [
+                            Obx(() {
+                              return Text(controller.selectedTab.value);
+                            }),
+                            const Icon(
                               Icons.arrow_forward_ios,
                             ),
                           ],

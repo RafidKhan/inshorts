@@ -20,34 +20,36 @@ class _DashboardViewState extends State<DashboardView> {
     // TODO: implement initState
     dashboardController.selectTab(dashboardController.listData[0]);
     dashboardController.selectContent(dashboardController.listContent[0]);
+    dashboardController.forceHideBottomNavAndAppbar();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<DashboardController>(builder: (controller) {
+    return Obx(() {
       return SafeArea(
         child: Scaffold(
+          extendBodyBehindAppBar:
+              dashboardController.currentPageIndex.value == 1,
           backgroundColor: Colors.white,
           appBar: PreferredSize(
             preferredSize: Size.copy(const Size.square(45)),
             child: Visibility(
-              visible: controller.showAppBar,
+              visible: dashboardController.showContentBottomNavAndAppbar.value,
               maintainAnimation: true,
               maintainState: true,
               child: AnimatedOpacity(
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.fastOutSlowIn,
-                opacity: controller.showAppBar ? 1 : 0,
-                child: controller.currentPageIndex == 0
+                opacity:
+                    dashboardController.showContentBottomNavAndAppbar.isTrue
+                        ? 1
+                        : 0,
+                child: dashboardController.currentPageIndex.value == 0
                     ? const AppbarPage0Widget()
                     : const AppbarPage1Widget(),
               ),
             ),
-
-            // controller.currentPageIndex == 0
-            //   ? const AppbarPage0Widget()
-            //   : const AppbarPage1Widget(),
           ),
           body: SizedBox(
             height: MediaQuery.of(context).size.height,
