@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:inshorts/dashboard/appbar.dart';
+import 'package:get/get.dart';
+import 'package:inshorts/controller/dashboard_controller.dart';
+import 'package:inshorts/dashboard/appbar_page0.dart';
+import 'package:inshorts/dashboard/appbar_page1.dart';
+import 'package:inshorts/dashboard/pageview_section/pageview_section.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({Key? key}) : super(key: key);
@@ -9,21 +13,27 @@ class DashboardView extends StatefulWidget {
 }
 
 class _DashboardViewState extends State<DashboardView> {
+  final dashboardController = Get.put(DashboardController());
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: const [
-              AppbarWidget(),
-            ],
+    return GetBuilder<DashboardController>(builder: (controller) {
+      return SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: PreferredSize(
+            preferredSize: Size.copy(const Size.square(45)),
+            child: controller.currentPageIndex == 0
+                ? const AppbarPage0Widget()
+                : const AppbarPage1Widget(),
+          ),
+          body: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: const PageViewSection(),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
