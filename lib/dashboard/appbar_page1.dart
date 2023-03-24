@@ -46,19 +46,25 @@ class AppbarPage1Widget extends StatelessWidget {
                       onTap: () {
                         controller.selectPage(1);
                       },
-                      child: const Center(
-                        child: Text("My Feed"),
+                      child: Center(
+                        child: Text(controller.selectedTab),
                       ),
                     ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 3.5,
                     child: InkWell(
-                      onTap: () {},
-                      child: const Align(
+                      onTap: () {
+                        if (controller.currentFeedPageIndex > 0) {
+                          controller.feedPageScrollToTop();
+                        }
+                      },
+                      child: Align(
                         alignment: Alignment.centerRight,
                         child: Icon(
-                          Icons.replay,
+                          controller.currentFeedPageIndex == 0
+                              ? Icons.replay
+                              : Icons.arrow_upward,
                         ),
                       ),
                     ),

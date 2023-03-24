@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inshorts/controller/dashboard_controller.dart';
+import 'package:inshorts/dashboard/content_view/content_page_view.dart';
 import 'package:inshorts/dashboard/discover/discover_page.dart';
-import 'package:inshorts/dashboard/my_feed/my_feed_page_view.dart';
 
-class PageViewSection extends StatelessWidget {
-  const PageViewSection({Key? key}) : super(key: key);
+class DashPageViewSection extends StatelessWidget {
+  const DashPageViewSection({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<DashboardController>(builder: (controller) {
       return PageView(
         controller: controller.pageController,
-        children: const[
+        children: const [
           DiscoverPage(),
-          MyFeedPageView(),
+          ContentPageView(),
         ],
         onPageChanged: (index) {
           controller.currentPageIndex = index;

@@ -52,9 +52,9 @@ class AppbarPage0Widget extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.end,
-                          children: const [
-                            Text("My Feed"),
-                            Icon(
+                          children:  [
+                            Text(controller.selectedTab),
+                             const Icon(
                               Icons.arrow_forward_ios,
                             ),
                           ],
