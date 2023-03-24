@@ -45,17 +45,27 @@ class ContentPageView extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            children: const [
-                              Icon(Icons.share),
-                              Text("Share"),
-                            ],
+                          InkWell(
+                            onTap: () {
+                              print("SHARE: ${controller.selectedContent}");
+                            },
+                            child: Column(
+                              children: const [
+                                Icon(Icons.share),
+                                Text("Share"),
+                              ],
+                            ),
                           ),
-                          Column(
-                            children: const [
-                              Icon(Icons.bookmark),
-                              Text("Bookmark"),
-                            ],
+                          InkWell(
+                            onTap: () {
+                              print("BOOKMARK: ${controller.selectedContent}");
+                            },
+                            child: Column(
+                              children: const [
+                                Icon(Icons.bookmark),
+                                Text("Bookmark"),
+                              ],
+                            ),
                           )
                         ],
                       ),

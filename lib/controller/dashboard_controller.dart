@@ -13,6 +13,7 @@ class DashboardController extends GetxController {
   Map<String, dynamic> selectedContent = {};
 
   bool showContentBottomNavBar = true;
+  bool showAppBar = true;
 
   selectTab(String text) {
     selectedTab = text;
@@ -21,6 +22,11 @@ class DashboardController extends GetxController {
   toggleContentBottomNav() {
     showContentBottomNavBar = !showContentBottomNavBar;
 
+    update();
+  }
+
+  setAppBarVisibility(bool value){
+    showAppBar = value;
     update();
   }
 
@@ -121,5 +127,19 @@ class DashboardController extends GetxController {
   selectContent(Map<String, dynamic> mapData) {
     selectedContent = mapData;
     update();
+  }
+
+  selectTopic(int index) {
+    selectTab("${listTopic[index]} $index");
+    selectContent(listContent[0]);
+    selectPage(1);
+    currentFeedPageIndex = 0;
+  }
+
+  void selectOption(int index) {
+    selectTab(listData[index]);
+    selectPage(1);
+    selectContent(listContent[0]);
+    currentFeedPageIndex = 0;
   }
 }

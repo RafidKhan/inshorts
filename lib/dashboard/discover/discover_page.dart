@@ -24,9 +24,7 @@ class DiscoverPage extends StatelessWidget {
                       image: "assets/images/image.png",
                       title: controller.listData[i],
                       onTap: () {
-                        controller.selectTab(controller.listData[i]);
-                        controller.selectPage(1);
-                        controller.selectContent(controller.listContent[0]);
+                        controller.selectOption(i);
                       },
                     ),
                 ],
@@ -58,10 +56,7 @@ class DiscoverPage extends StatelessWidget {
                 itemBuilder: (BuildContext context, index) {
                   return InkWell(
                     onTap: () {
-                      controller
-                          .selectTab("${controller.listTopic[index]} $index");
-                      controller.selectContent(controller.listContent[0]);
-                      controller.selectPage(1);
+                      controller.selectTopic(index);
                     },
                     child: Stack(
                       alignment: Alignment.bottomLeft,
